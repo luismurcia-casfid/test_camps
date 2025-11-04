@@ -123,6 +123,15 @@
 ```
 tu-proyecto/
 │
+├── app/
+│   └── Http/
+│       └── Middleware/
+│           ├── HandleLanguage.php ✅ (nuevo)
+│           └── HandleInertiaRequests.php ✏️ (modificado)
+│
+├── bootstrap/
+│   └── app.php ✏️ (modificado)
+│
 ├── routes/
 │   └── settings.php ✏️ (modificado)
 │

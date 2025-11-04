@@ -344,12 +344,46 @@ console.log('i18next language:', window.i18n?.language);
 3. **Testing**: Ejecutar los casos de prueba
 4. **Documentar**: Traducciones personalizadas para tu app
 
+## 🐛 Fix: Páginas de Error con Idioma Correcto
+
+### Problema
+Las páginas de error (404, 500, etc.) mostraban el idioma por defecto en lugar del seleccionado.
+
+### Solución
+Se añadió un handler de excepciones en `bootstrap/app.php` que:
+1. Lee la cookie `language` antes de renderizar cualquier error
+2. Establece `app()->setLocale()` antes del renderizado
+3. Funciona para TODAS las excepciones (404, 500, 403, etc.)
+
+```php
+->withExceptions(function (Exceptions $exceptions): void {
+    $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
+        $locale = $request->cookie('language', config('app.locale', 'es'));
+        $supportedLocales = ['es', 'en', 'ca'];
+        if (in_array($locale, $supportedLocales)) {
+            app()->setLocale($locale);
+        }
+        return null;
+    });
+})
+```
+
+### Test
+```bash
+1. Establece idioma en English
+2. Accede a /pagina-inexistente
+3. Verifica que el error 404 está en inglés ✅
+```
+
+**Documentación completa**: `FIX_ERRORES_404_IDIOMA.md`
+
 ## ✅ Checklist de Integración
 
 - ✅ Middleware `HandleLanguage` creado
 - ✅ Middleware registrado en `bootstrap/app.php`
 - ✅ Cookie `language` excluida del cifrado
 - ✅ Locale compartido via Inertia
+- ✅ Handler de excepciones configurado (páginas de error)
 - ✅ Hook `useLanguage` actualizado para leer servidor
 - ✅ i18n.js sincronizado con HTML
 - ✅ Sin errores de linting
@@ -357,7 +391,6 @@ console.log('i18next language:', window.i18n?.language);
 
 ---
 
-**Estado**: ✅ Integración Completa Servidor-Cliente
-**Versión**: 2.0.0 (con soporte de servidor)
+**Estado**: ✅ Integración Completa Servidor-Cliente + Fix Errores
+**Versión**: 2.0.1 (con fix de páginas de error)
 **Fecha**: 2025-11-04
-

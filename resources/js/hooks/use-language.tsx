@@ -60,7 +60,7 @@ export function useLanguage() {
         const savedLanguage = localStorage.getItem('language') as Language | null;
         const serverLocale = page.props.locale as Language | undefined;
         const documentLocale = document.documentElement.lang as Language;
-        
+
         const initialLanguage =
             savedLanguage ||
             serverLocale ||

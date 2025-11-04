@@ -40,4 +40,3 @@ class HandleLanguage
         return $next($request);
     }
 }
-

@@ -25,5 +25,18 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Establecer el locale antes de renderizar páginas de error
+        $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
+            // Obtener el idioma de la cookie
+            $locale = $request->cookie('language', config('app.locale', 'es'));
+
+            // Validar que el idioma es soportado
+            $supportedLocales = ['es', 'en', 'ca'];
+            if (in_array($locale, $supportedLocales)) {
+                app()->setLocale($locale);
+            }
+
+            // Dejar que Laravel maneje el renderizado normal
+            return null;
+        });
     })->create();
