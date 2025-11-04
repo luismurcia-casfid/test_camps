@@ -11,6 +11,7 @@ import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
 import AuthSplitLayout from '@/layouts/auth/auth-split-layout';
+import { useTranslation } from 'react-i18next'
 
 interface LoginProps {
     status?: string;
@@ -23,6 +24,8 @@ export default function Login({
     canResetPassword,
     canRegister,
 }: LoginProps) {
+    const { t, i18n } = useTranslation()
+
     return (
         <AuthSplitLayout
             title="Log in to your account"
@@ -95,7 +98,7 @@ export default function Login({
                                 data-test="login-button"
                             >
                                 {processing && <Spinner />}
-                                Log in
+                                {t('Sign In')}
                             </Button>
                         </div>
 
