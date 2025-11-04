@@ -17,7 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Language() {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Language settings" />

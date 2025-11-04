@@ -10,7 +10,7 @@ export default function Welcome({
     canRegister?: boolean;
 }) {
     const { auth } = usePage<SharedData>().props;
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     return (
         <>
             <Head title="Welcome">

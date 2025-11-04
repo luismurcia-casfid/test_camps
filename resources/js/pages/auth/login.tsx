@@ -24,7 +24,7 @@ export default function Login({
     canResetPassword,
     canRegister,
 }: LoginProps) {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     return (
         <AuthSplitLayout
