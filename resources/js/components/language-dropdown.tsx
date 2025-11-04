@@ -21,10 +21,6 @@ export default function LanguageToggleDropdown({
         { code: 'ca', flag: '🏴', name: 'Català' },
     ];
 
-    const getCurrentLanguage = () => {
-        return languages.find(lang => lang.code === language) || languages[0];
-    };
-
     return (
         <div className={className} {...props}>
             <DropdownMenu>
