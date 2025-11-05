@@ -5,9 +5,10 @@ FROM php:8.3-apache
 # ---------------------------
 RUN apt-get update && apt-get install -y \
     git curl zip unzip gnupg libpng-dev libjpeg-dev libfreetype6-dev \
-    libonig-dev libxml2-dev libzip-dev libpq-dev \
+    libonig-dev libxml2-dev libzip-dev libpq-dev libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mbstring pdo pdo_mysql zip bcmath exif pcntl
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install gd mbstring pdo pdo_mysql zip bcmath exif pcntl intl
 
 # ---------------------------
 # 2️⃣ Instalar Node.js 24 (desde NodeSource)
