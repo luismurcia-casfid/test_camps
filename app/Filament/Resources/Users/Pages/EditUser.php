@@ -21,4 +21,15 @@ class EditUser extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    /**
+     * Después de actualizar el usuario, sincronizar el rol
+     */
+    protected function afterSave(): void
+    {
+        $role = $this->data['role'] ?? 'usuario';
+
+        // Sincronizar el rol (elimina los anteriores y asigna el nuevo)
+        $this->record->syncRoles([$role]);
+    }
 }

@@ -23,6 +23,27 @@ class UsersTable
                     ->searchable()
                     ->sortable()
                     ->copyable(),
+                TextColumn::make('roles.name')
+                    ->label('Rol')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => match($state) {
+                        'super_admin' => 'Super Admin',
+                        'administrador' => 'Administrador',
+                        'gestor' => 'Gestor',
+                        'monitor' => 'Monitor',
+                        'usuario' => 'Usuario',
+                        default => $state,
+                    })
+                    ->color(fn (string $state): string => match($state) {
+                        'super_admin' => 'danger',
+                        'administrador' => 'primary',
+                        'gestor' => 'warning',
+                        'monitor' => 'info',
+                        'usuario' => 'gray',
+                        default => 'gray',
+                    })
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('email_verified_at')
                     ->label('Email Verificado')
                     ->dateTime('d/m/Y H:i')

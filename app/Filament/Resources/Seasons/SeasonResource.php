@@ -58,4 +58,15 @@ class SeasonResource extends Resource
             'edit' => EditSeason::route('/{record}/edit'),
         ];
     }
+
+    /**
+     * Determina si este recurso debe aparecer en la navegación
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+
+        // Solo visible para super_admin y administrador
+        return $user && $user->hasAnyRole(['super_admin', 'administrador']);
+    }
 }

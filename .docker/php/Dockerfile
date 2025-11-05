@@ -75,6 +75,15 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # ---------------------------
+# 🔟 Copiar y configurar scripts de entrypoint y helper
+# ---------------------------
+COPY ./.docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./.docker/php/artisan-helper.sh /usr/local/bin/artisan-helper
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/artisan-helper
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# ---------------------------
 # 🔟 Ejecutar Apache y Vite al mismo tiempo
 # ---------------------------
 CMD ["bash", "-c", "npm run dev & apache2-foreground"]

@@ -66,4 +66,15 @@ class CourseResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
+    /**
+     * Determina si este recurso debe aparecer en la navegación
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+
+        // Visible para super_admin, administrador y monitor
+        return $user && $user->hasAnyRole(['super_admin', 'administrador', 'monitor']);
+    }
 }
