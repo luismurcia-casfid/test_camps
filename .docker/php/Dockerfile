@@ -5,9 +5,10 @@ FROM php:8.3-apache
 # ---------------------------
 RUN apt-get update && apt-get install -y \
     git curl zip unzip gnupg libpng-dev libjpeg-dev libfreetype6-dev \
-    libonig-dev libxml2-dev libzip-dev libpq-dev \
+    libonig-dev libxml2-dev libzip-dev libpq-dev libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mbstring pdo pdo_mysql zip bcmath exif pcntl
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install gd mbstring pdo pdo_mysql zip bcmath exif pcntl intl
 
 # ---------------------------
 # 2️⃣ Instalar Node.js 24 (desde NodeSource)
@@ -72,6 +73,15 @@ EXPOSE 80 5173
 # Permisos para Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# ---------------------------
+# 🔟 Copiar y configurar scripts de entrypoint y helper
+# ---------------------------
+COPY ./.docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./.docker/php/artisan-helper.sh /usr/local/bin/artisan-helper
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/artisan-helper
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # ---------------------------
 # 🔟 Ejecutar Apache y Vite al mismo tiempo

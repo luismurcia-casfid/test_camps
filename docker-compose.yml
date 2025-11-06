@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: .docker/php/Dockerfile
       args:
-        PUID: ${PUID}
-        PGID: ${PGID}
+        PUID: ${PUID:-1000}
+        PGID: ${PGID:-1000}
     container_name: cnb_app
     volumes:
       - .:/var/www/html
