@@ -17,6 +17,7 @@ class Course extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'season_id',
         'is_active',
         'starts_at',

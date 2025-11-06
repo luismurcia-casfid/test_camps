@@ -21,6 +21,10 @@ class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
 
+    // Esta propiedad hace que este recurso NO se filtre por tenant
+    // Permite gestionar todos los cursos sin importar el tenant seleccionado
+    protected static bool $isScopedToTenant = false;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static string|UnitEnum|null $navigationGroup = 'Administración General';

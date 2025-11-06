@@ -4,15 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasTenants
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
@@ -75,5 +78,24 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return false;
+    }
+
+    public function teams(): Collection
+    {
+        return Course::all();
+    }
+
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->teams();
+    }
+
+    /**
+     * Verifica si el usuario puede acceder a un tenant específico
+     * OPCIÓN 2: Permite acceso a cualquier curso
+     */
+    public function canAccessTenant(EloquentModel $tenant): bool
+    {
+        return true;
     }
 }

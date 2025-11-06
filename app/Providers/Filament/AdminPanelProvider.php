@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Tenancy\RegisterTeam;
+use App\Models\Course;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -28,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->tenant(Course::class, slugAttribute: 'slug', ownershipRelationship: 'course')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -42,6 +45,8 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
+            ->tenant(Course::class, slugAttribute: 'slug', ownershipRelationship: 'course')
+            ->tenantRegistration(RegisterTeam::class)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
