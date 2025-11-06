@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Course extends Model
@@ -33,6 +34,11 @@ class Course extends Model
     public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class, 'season_id', 'id');
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class, 'course_id', 'id');
     }
 
     public function getNameAttribute(): string

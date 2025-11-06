@@ -30,7 +30,6 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->tenant(Course::class, slugAttribute: 'slug', ownershipRelationship: 'course')
             ->login()
             ->colors([
                 'primary' => Color::Amber,

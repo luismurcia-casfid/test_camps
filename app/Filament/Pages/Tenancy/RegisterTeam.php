@@ -3,10 +3,13 @@
 namespace App\Filament\Pages\Tenancy;
 
 use App\Models\Course;
-use App\Models\Team;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Pages\Tenancy\RegisterTenant;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Model;
 
 class RegisterTeam extends RegisterTenant
 {
@@ -15,17 +18,31 @@ class RegisterTeam extends RegisterTenant
         return 'Nuevo curso';
     }
 
+    public static function canView(?Model $tenant = null): bool
+    {
+        return true;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('name'),
-                TextInput::make('slug'),
+                TextInput::make('name')
+                    ->label('Nombre del Curso')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('slug')
+                    ->label('Slug (URL)')
+                    ->required()
+                    ->unique(Course::class, 'slug')
+                    ->maxLength(255)
+                    ->helperText('Usado en la URL, ej: curso-laravel-2025'),
                 Select::make('season_id')
                     ->label('Temporada')
                     ->relationship('season', 'name')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->required(),
                 DateTimePicker::make('starts_at')
                     ->label('Fecha de Inicio')
                     ->native(false)
@@ -44,8 +61,6 @@ class RegisterTeam extends RegisterTenant
     protected function handleRegistration(array $data): Course
     {
         $course = Course::create($data);
-
-        // $team->members()->attach(auth()->user());
 
         return $course;
     }
